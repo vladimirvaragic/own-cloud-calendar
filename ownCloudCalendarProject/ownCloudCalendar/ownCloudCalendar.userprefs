@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ownCloudCalendarGUI\LogIn.cs">
+    <Files>
+      <File FileName="ownCloudCalendarGUI\LogIn.cs" Line="48" Column="48" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="D:\Vladimir Varagic\Privatno\Diplomski rad\ownCloudCalendar\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarGUI\LogIn.cs" line="40" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
