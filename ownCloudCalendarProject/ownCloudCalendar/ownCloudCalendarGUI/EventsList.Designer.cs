@@ -108,7 +108,7 @@
             this.btnEventMenagment.Name = "btnEventMenagment";
             this.btnEventMenagment.Size = new System.Drawing.Size(107, 23);
             this.btnEventMenagment.TabIndex = 105;
-            this.btnEventMenagment.Text = "Menage events";
+            this.btnEventMenagment.Text = "Manage events";
             this.btnEventMenagment.UseVisualStyleBackColor = true;
             this.btnEventMenagment.Click += new System.EventHandler(this.btnEventMenagment_Click);
             // 

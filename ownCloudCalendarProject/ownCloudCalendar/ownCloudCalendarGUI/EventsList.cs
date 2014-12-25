@@ -499,5 +499,6 @@ namespace ownCloudCalendarGUI
         }
 
         #endregion Events
+
     }
 }
