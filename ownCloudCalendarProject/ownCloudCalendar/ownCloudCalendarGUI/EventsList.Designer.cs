@@ -42,11 +42,11 @@
             this.lblLocation = new System.Windows.Forms.Label();
             this.lblEventDescription = new System.Windows.Forms.Label();
             this.lblEventLocation = new System.Windows.Forms.Label();
-            this.lblEventStartTime = new System.Windows.Forms.Label();
             this.lblEventDate = new System.Windows.Forms.Label();
             this.lblMiddleLine = new System.Windows.Forms.Label();
             this.lblEventSummary = new System.Windows.Forms.Label();
             this.lblEventEndTime = new System.Windows.Forms.Label();
+            this.lblEventStartTime = new System.Windows.Forms.Label();
             this.lblAllDayEvent = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblNoEventsMessages = new System.Windows.Forms.Label();
@@ -124,11 +124,11 @@
             this.drEvents.ItemTemplate.Controls.Add(this.lblLocation);
             this.drEvents.ItemTemplate.Controls.Add(this.lblEventDescription);
             this.drEvents.ItemTemplate.Controls.Add(this.lblEventLocation);
-            this.drEvents.ItemTemplate.Controls.Add(this.lblEventStartTime);
             this.drEvents.ItemTemplate.Controls.Add(this.lblEventDate);
             this.drEvents.ItemTemplate.Controls.Add(this.lblMiddleLine);
             this.drEvents.ItemTemplate.Controls.Add(this.lblEventSummary);
             this.drEvents.ItemTemplate.Controls.Add(this.lblEventEndTime);
+            this.drEvents.ItemTemplate.Controls.Add(this.lblEventStartTime);
             this.drEvents.ItemTemplate.Controls.Add(this.lblAllDayEvent);
             this.drEvents.ItemTemplate.Size = new System.Drawing.Size(470, 114);
             this.drEvents.Location = new System.Drawing.Point(1, 40);
@@ -174,16 +174,6 @@
             this.lblEventLocation.TabIndex = 11;
             this.lblEventLocation.Text = "Event location";
             // 
-            // lblEventStartTime
-            // 
-            this.lblEventStartTime.AutoSize = true;
-            this.lblEventStartTime.Location = new System.Drawing.Point(7, 37);
-            this.lblEventStartTime.Name = "lblEventStartTime";
-            this.lblEventStartTime.Size = new System.Drawing.Size(49, 13);
-            this.lblEventStartTime.TabIndex = 8;
-            this.lblEventStartTime.Text = "15:30:00";
-            this.lblEventStartTime.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
             // lblEventDate
             // 
             this.lblEventDate.AutoSize = true;
@@ -223,6 +213,16 @@
             this.lblEventEndTime.TabIndex = 9;
             this.lblEventEndTime.Text = "15:30:00";
             this.lblEventEndTime.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // lblEventStartTime
+            // 
+            this.lblEventStartTime.AutoSize = true;
+            this.lblEventStartTime.Location = new System.Drawing.Point(7, 37);
+            this.lblEventStartTime.Name = "lblEventStartTime";
+            this.lblEventStartTime.Size = new System.Drawing.Size(49, 13);
+            this.lblEventStartTime.TabIndex = 8;
+            this.lblEventStartTime.Text = "15:30:00";
+            this.lblEventStartTime.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // lblAllDayEvent
             // 
@@ -270,8 +270,8 @@
             this.ClientSize = new System.Drawing.Size(484, 462);
             this.Controls.Add(this.btnSyncNow);
             this.Controls.Add(this.btnEventMenagment);
-            this.Controls.Add(this.drEvents);
             this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.drEvents);
             this.Controls.Add(this.lblNoEventsMessages);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

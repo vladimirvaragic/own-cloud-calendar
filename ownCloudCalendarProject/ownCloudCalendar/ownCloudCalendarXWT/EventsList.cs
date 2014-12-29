@@ -1,44 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Timers;
 using DDay.iCal;
 using ownCloudCalendarController;
-using ownCloudCalendarGUI.Common;
+using ownCloudCalendarXWT.Common;
+using Xwt;
+using Xwt.Drawing;
 
-namespace ownCloudCalendarGUI
+namespace ownCloudCalendarXWT
 {
-    public partial class EventsList : BaseForm
+    public class EventsList : BaseForm
     {
-        #region Constructors
+        #region Private fields
 
-        public EventsList()
+        Label lblNoEventsMessages = new Label("There is no upcoming events in calendar")
         {
-            try
-            {
-                InitializeComponent();
-                CenterToScreen();
-                IsClosed = false;
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+            Font = Font.SystemFont.WithWeight(Xwt.Drawing.FontWeight.Bold).WithSize(12)
+        };
+        Label lblTitle = new Label("List of events")
+        {
+            Font = Font.SystemFont.WithWeight(Xwt.Drawing.FontWeight.Bold).WithSize(14)
+        };
+
+        VBox drEvents = new VBox()
+        {
+            ExpandHorizontal = true,
+            ExpandVertical = true
+        };
+
+        Button btnSyncNow = new Button("Sync now");
+        Button btnEventManagment = new Button("Manage events");
+
+        #endregion Private fields
+
+        #region Constructors
 
         public EventsList(IICalendarCollection iCalCollection, bool isAutomaticSyncChecked, int? syncTimerInterval, string calendarName, Uri url, string username, string password, string serverAddress)
         {
             try
             {
-                InitializeComponent();
-                CenterToScreen();
+                DrawControls();
                 IsClosed = false;
                 CalCollection = iCalCollection;
                 CalendarName = calendarName;
@@ -52,6 +59,16 @@ namespace ownCloudCalendarGUI
                 PopulateEventsList();
                 SetNotificationTimer();
                 SetSyncTimer(IsAutomaticSyncChecked, SyncTimerInterval);
+
+                btnSyncNow.Clicked += delegate
+                {
+                    btnSyncNow_Click();
+                };
+
+                btnEventManagment.Clicked += delegate
+                {
+                    btnEventManagment_Click();
+                };
             }
             catch (Exception ex)
             {
@@ -126,6 +143,28 @@ namespace ownCloudCalendarGUI
         #endregion Properties
 
         #region Non-virtual methods
+
+        private void DrawControls()
+        {
+            lblTitle.MinWidth = 220;
+            AddChild(lblTitle, 13, 13);
+            lblNoEventsMessages.MinWidth = 220;
+            AddChild(lblNoEventsMessages, 13, 52);
+
+            drEvents.MinWidth = 478;
+            drEvents.MinHeight = 378;
+            AddChild(drEvents, 1, 40);
+
+            btnSyncNow.MinWidth = 75;
+            btnSyncNow.MinHeight = 23;
+            btnSyncNow.BackgroundColor = Xwt.Drawing.Color.FromBytes(68, 187, 238);
+            AddChild(btnSyncNow, 5, 427);
+
+            btnEventManagment.MinWidth = 105;
+            btnEventManagment.MinHeight = 23;
+            btnEventManagment.BackgroundColor = Xwt.Drawing.Color.FromBytes(68, 187, 238);
+            AddChild(btnEventManagment, 372, 427);
+        }
 
         private void PopulateEventsList()
         {
@@ -231,48 +270,29 @@ namespace ownCloudCalendarGUI
 
         private void BindEventRepeater()
         {
-            BindingSource bsEvents = new BindingSource();
             bool isAllDay = false;
 
-            bsEvents.DataSource = GetDataTableFromCollection(out isAllDay);
-            if (lblEventSummary.DataBindings.Count == 0)
-            {
-                lblEventSummary.DataBindings.Add("Text", bsEvents, "EventSummary");
-                lblEventDate.DataBindings.Add("Text", bsEvents, "EventDate");
-                lblEventStartTime.DataBindings.Add("Text", bsEvents, "EventStartTime");
-                lblEventEndTime.DataBindings.Add("Text", bsEvents, "EventEndTime");
-                lblEventLocation.DataBindings.Add("Text", bsEvents, "EventLocation");
-                lblEventDescription.DataBindings.Add("Text", bsEvents, "EventDescription");
-            }
-            drEvents.DataSource = bsEvents;
+            DataTable dtEvents = GetDataTableFromCollection(out isAllDay);
 
-            if (isAllDay)
+            foreach (DataRow drEvent in dtEvents.Rows)
             {
-                lblAllDayEvent.Visible = true;
-                lblEventStartTime.Visible = false;
-                lblMiddleLine.Visible = false;
-                lblEventEndTime.Visible = false;
-            }
-            else
-            {
-                lblAllDayEvent.Visible = false;
-                lblEventStartTime.Visible = true;
-                lblMiddleLine.Visible = true;
-                lblEventEndTime.Visible = true;
+                EventListItem eventListItem = new EventListItem(drEvent, isAllDay);
+                eventListItem.MinHeight = 300;
+                drEvents.PackStart(eventListItem, true, true);
             }
         }
 
         private void HideForm()
         {
             IsHiden = true;
-            Hide();
+            this.ParentWindow.Hide();
         }
 
         private void CloseForm()
         {
             IsHiden = false;
             IsClosed = true;
-            Close();
+            this.ParentWindow.Dispose();
         }
 
         private void SetNotificationTimer()
@@ -281,11 +301,14 @@ namespace ownCloudCalendarGUI
             int pingTimeInterval;
 
             pingTimeInterval = Convert.ToInt32(ConfigurationManager.AppSettings["notificationPingTimeInterval"].ToString());
-            timer.Tick += new EventHandler(CheckEventStartTime);
+            timer.Elapsed += delegate
+            {
+                CheckEventStartTime();
+            };
 
             timer.Interval = pingTimeInterval;
             timer.Start();
-            CheckEventStartTime(this, null);
+            CheckEventStartTime();
         }
 
         private void SetSyncTimer(bool isAutomaticSyncChecked, int? syncTimerInterval)
@@ -295,11 +318,14 @@ namespace ownCloudCalendarGUI
                 Timer timer = new Timer();
                 int pingTimeInterval = Convert.ToInt32(syncTimerInterval) * 60000;
 
-                timer.Tick += new EventHandler(AutomaticSyncEvents);
+                timer.Elapsed += delegate
+                {
+                    AutomaticSyncEvents();
+                };
 
                 timer.Interval = pingTimeInterval;
                 timer.Start();
-                AutomaticSyncEvents(this, null);
+                AutomaticSyncEvents();
             }
         }
 
@@ -314,60 +340,60 @@ namespace ownCloudCalendarGUI
 
         #region Events
 
-        private void EventsList_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            try
-            {
-                if (IsClosed)
-                {
-                    e.Cancel = false;
-                }
-                else
-                {
-                    e.Cancel = true;
-                    HideForm();
-                }
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //private void EventsList_FormClosing(object sender, CloseRequestedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (IsClosed)
+        //        {
+        //            e.Cancel = false;
+        //        }
+        //        else
+        //        {
+        //            e.Cancel = true;
+        //            HideForm();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void niCalendarClient_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                CenterToScreen();
-                Show();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //private void niCalendarClient_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        CenterToScreen();
+        //        Show();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void niCalendarClient_MouseClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (e.Button == MouseButtons.Right)
-                {
-                    cmsRightClick.Show(this, Control.MousePosition);
-                }
-                else if (e.Button == MouseButtons.Left)
-                {
-                    CenterToScreen();
-                    Show();
-                }
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //private void niCalendarClient_MouseClick(object sender, MouseEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (e.Button == MouseButtons.Right)
+        //        {
+        //            cmsRightClick.Show(this, Control.MousePosition);
+        //        }
+        //        else if (e.Button == MouseButtons.Left)
+        //        {
+        //            CenterToScreen();
+        //            Show();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void btnEventMenagment_Click(object sender, EventArgs e)
+        private void btnEventManagment_Click()
         {
             try
             {
@@ -380,7 +406,7 @@ namespace ownCloudCalendarGUI
             }
         }
 
-        private void CheckEventStartTime(object sender, EventArgs e)
+        private void CheckEventStartTime()
         {
             try
             {
@@ -403,7 +429,7 @@ namespace ownCloudCalendarGUI
                         {
                             string message = String.Format("Event {0} will start in 5 minutes", item.Summary.ToString());
 
-                            MessageBox.Show(message, "Event notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageDialog.ShowMessage(message);
                         }
                     }
                 }
@@ -414,7 +440,7 @@ namespace ownCloudCalendarGUI
             }
         }
 
-        private void AutomaticSyncEvents(object sender, EventArgs e)
+        private void AutomaticSyncEvents()
         {
             try
             {
@@ -427,65 +453,65 @@ namespace ownCloudCalendarGUI
             }
         }
 
-        private void showEventsListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Show();
-                CenterToScreen();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //private void showEventsListToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        Show();
+        //        CenterToScreen();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void goToSyncConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                CloseForm();
-                SyncCalendar syncCalendar = new SyncCalendar(CalendarName, IsAutomaticSyncChecked, SyncTimerInterval, ServerAddress, Username, Password);
-                syncCalendar.Show();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //private void goToSyncConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        CloseForm();
+        //        SyncCalendar syncCalendar = new SyncCalendar(CalendarName, IsAutomaticSyncChecked, SyncTimerInterval, ServerAddress, Username, Password);
+        //        syncCalendar.Show();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                CloseForm();
-                LogIn logIn = new LogIn();
-                logIn.Show();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        CloseForm();
+        //        LogIn logIn = new LogIn();
+        //        logIn.Show();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                FormCollection fc = Application.OpenForms;
+        //private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        FormCollection fc = Application.OpenForms;
 
-                foreach (Form frm in fc)
-                {
-                    frm.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
+        //        foreach (Form frm in fc)
+        //        {
+        //            frm.Close();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleException(ex);
+        //    }
+        //}
 
-        private void btnSyncNow_Click(object sender, EventArgs e)
+        private void btnSyncNow_Click()
         {
             try
             {
