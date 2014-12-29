@@ -159,20 +159,30 @@ namespace ownCloudCalendarXWT
                 string url = txtServerAddress.Text.Trim() + cLogInUrlExtension;
                 if (!connector.CheckCredentials(url, txtUsername.Text.Trim(), txtPassword.Password.Trim()))
                 {
-                    ShowMessage("There is a problem with connection to server. Please, check server address, username and password and try again.", "ownCloud Login Unavailable");
+                    MessageDialog.ShowMessage("There is a problem with connection to server. Please, check server address, username and password and try again.");
                 }
                 else
                 {
-                    Hide();
+                    this.ParentWindow.Hide();
+
+                    var syncCalendarWindow = new Window()
+                    {
+                        Title = "ownCloud Calendar Client",
+                        Width = 500,
+                        Height = 250
+                    };
+                    syncCalendarWindow.Resizable = false;
                     SyncCalendar syncCalendar = new SyncCalendar(txtServerAddress.Text.Trim(), txtUsername.Text.Trim(), txtPassword.Password.Trim());
-                    syncCalendar.Show();
+                    syncCalendarWindow.Content = syncCalendar;
+                    syncCalendarWindow.Show();
+
                     if (syncCalendar.IsHiden)
                     {
-                        Hide();
+                        this.ParentWindow.Hide();
                     }
                     else
                     {
-                        Dispose();
+                        this.ParentWindow.Dispose();
                     }
                 }
             }

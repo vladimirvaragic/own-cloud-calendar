@@ -45,6 +45,7 @@
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\BaseForm.cs" />
+    <Compile Include="EventListItem.cs" />
+    <Compile Include="EventsList.cs" />
     <Compile Include="LogIn.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

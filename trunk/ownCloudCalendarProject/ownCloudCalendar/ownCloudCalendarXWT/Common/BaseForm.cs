@@ -23,12 +23,7 @@ namespace ownCloudCalendarXWT.Common
                 Logging.LogError(ex, LoggingCategories.GUI);
             }
 
-            MessageDialog.ShowMessage("There was an error in the application");
-        }
-
-        protected void ShowMessage(string message, string title)
-        {
-            MessageDialog.ShowMessage(message, title);
+            MessageDialog.ShowError("There was an error in the application");
         }
         
         #endregion Non-virtual methods
