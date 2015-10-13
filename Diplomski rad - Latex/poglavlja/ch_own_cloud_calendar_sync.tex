@@ -25,3 +25,22 @@
 \end{figure}
 
 На основу приказаног алгоритма  може се стећи јасна и потпуна слика о начину рада саме апликације. У наставку ће бити детаљније објашњене неке интересантније функционалности и биће приказани делови програмског кода, док се комплетан код пројекта може погледати на одговарајућем репозиторијуму\cite{svn_repo}.
+
+\subsection{Аутентификација}
+
+Аутентификација корисника на веб портал \textit{оwnCloud} платформе одрађена је коришћењем класа \textit{WebClient}, \textit{NetworkCredential} које су саставни део \textit{.NET Framework-a}.  Подаци унети на форми за пријаву на систем (\ref{fig:login_form}), која се приказује након стартовања апликације, се прослеђују на верификацију:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{slike/logInForm.png}
+	\caption{Форма за пријаву на систем}
+	\label{fig:login_form}
+\end{figure}
+
+%Како се размена података врши у комуникацији са сервером без креирања сесије, при сваком новом упиту сервер очекује заглавље \texttt{Authorization}, како би кориснику вратио захтеване податке. Сервис апликације који је задужен за постављање овог заглавља је \texttt{LoginService.js}.
+
+%\lstinputlisting[language=HTML5,caption=LoginService.js сервис који омогућава пријаву корисника]{primeri_koda/news_app/LoginService.js}
+
+%Из наведеног се може видети да сервис \texttt{LoginService} у суштини представља објекат са главним методом \texttt{ login}, који дефинише поменуто \texttt{Authorization} заглавље HTTP захтева. Такође, \texttt{LoginService} води рачуна о томе да ли је корисник успешно пријављен на апликацију. Поред уграђених %сервиса \texttt{\$http} и \texttt{ \$timeout}, \texttt{LoginService} користи додатно дефинисан сервис \texttt{ UserService}, који садржи саме податке корисника.
+
+%\lstinputlisting[language=HTML5,caption=UserService.js сервис који меморише корисничке податке]{primeri_koda/news_app/UserService.js}
