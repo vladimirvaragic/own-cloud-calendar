@@ -280,7 +280,8 @@ namespace ownCloudCalendarGUI
             Timer timer = new Timer();
             int pingTimeInterval;
 
-            pingTimeInterval = Convert.ToInt32(ConfigurationManager.AppSettings["notificationPingTimeInterval"].ToString());
+            pingTimeInterval = 
+                Convert.ToInt32(ConfigurationManager.AppSettings["notificationPingTimeInterval"].ToString());
             timer.Tick += new EventHandler(CheckEventStartTime);
 
             timer.Interval = pingTimeInterval;

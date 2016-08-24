@@ -7,7 +7,6 @@
 \usepackage{amsfonts}
 \usepackage{graphicx}
 \usepackage{ucs}
-\usepackage{listings}
 \usepackage[serbianc]{babel}
 \usepackage{pdfsync}
 \usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
@@ -19,6 +18,7 @@
 \usepackage{subcaption}
 \usepackage{nameref}
 \usepackage{url}
+\usepackage{listings}
 
 % Definisanje boja
 \definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
@@ -205,8 +205,8 @@
     keywordstyle=\color{blue}\bfseries,
     ndkeywordstyle=\color{greenCode}\bfseries,
     commentstyle=\color{darkgray}\ttfamily,
-    % Code
-	tabsize=2,
+    % Code    
+	tabsize=2,    
 	showspaces=false,
 	showtabs=false,
 	xleftmargin=17pt,
@@ -223,7 +223,7 @@
 
 \lstset{%
     % Basic design
-    basicstyle=\fontsize{9}{11}\ttfamily,
+    basicstyle=\fontsize{9}{11}\ttfamily,   
     frame=l,
     % Line numbers
     xleftmargin={0.75cm},
@@ -247,15 +247,90 @@
     breaklines=true
 }
 
-\lstloadlanguages {
-	% Check Documentation for further languages ...
-	%[Visual]Basic
-	%Pascal
-	C,
-	%C++
-	%Java,
-	%XML,
-	HTML5
+
+\lstloadlanguages{% Check Dokumentation for further languages ...
+C,
+C++,
+csh,
+Java
+}
+
+\definecolor{bluekeywords}{rgb}{0,0,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
+\definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
+\definecolor{usertype}{rgb}{0.17,0.57,0.68}
+\definecolor{xmlred}{rgb}{255,0,0}
+
+\lstdefinelanguage{csharp}{
+    language=[Sharp]C,
+    basicstyle=\fontsize{9}{11}\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    %backgroundcolor=\color{background},
+    commentstyle=\color{greencomments},
+    morekeywords={partial, var, value, get, set},
+    keywordstyle=\color{bluekeywords},
+    stringstyle=\color{redstrings},
+    emph =[1]
+    {
+	ChangedAttributeEventArgs,
+	ComponentEventArgs,
+	EventHandler,
+	ICollection,
+	IComponent,
+	IEntity,
+	Timer,
+	Convert,
+	ConfigurationManager,
+	IICalendarCollection,
+	owdCloudCalendarConnector,
+	Uri,
+	EventArgs,
+	EventsList,
+	String,
+	Exception
+    },
+    emphstyle =[1]\color{usertype},
+    emphstyle =[1]\fontsize{9}{11}\ttfamily,
+}
+
+\lstdefinelanguage{config}{
+   language=[Sharp]C,
+   basicstyle=\fontsize{9}{11}\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    %backgroundcolor=\color{background},
+    commentstyle=\color{greencomments},
+    keywordstyle=\color{redstrings},
+    stringstyle=\color{bluekeywords},
+    basicstyle =\color{redstrings},
+    morekeywords = {xml, configuration, appSettings, add, startup, supportedRuntime, runtime, assemblyBinding, dependentAssembly, assemblyIdentity, bindingRedirect},
+    emph =[1]
+    {
+	version,
+	encoding,
+	key,
+	value,
+	sku,
+	xmlns,
+	name,
+	publicKeyToken,
+	culture,
+	oldVersion,
+	newVersion
+    },
+    emphstyle =[1]\color{xmlred},
 }
 
 %
