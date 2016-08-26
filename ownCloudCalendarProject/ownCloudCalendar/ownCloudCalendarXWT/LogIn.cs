@@ -48,7 +48,7 @@ namespace ownCloudCalendarXWT
 #else
             txtServerAddress.Text = String.Empty;
             txtUsername.Text = String.Empty;
-            txtPassword.Text = String.Empty;            
+            txtPassword.Password = String.Empty;            
 #endif
 
                 btnLogIn.Clicked += delegate

@@ -1,0 +1,5 @@
+D:\Vladimir Varagic\Privatno\Diplomski rad\svnVersion\ownCloudCalendar - GitHub\own-cloud-calendar\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarShared\bin\Release\ownCloudCalendarShared.dll
+D:\Vladimir Varagic\Privatno\Diplomski rad\svnVersion\ownCloudCalendar - GitHub\own-cloud-calendar\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarShared\bin\Release\ownCloudCalendarShared.pdb
+D:\Vladimir Varagic\Privatno\Diplomski rad\svnVersion\ownCloudCalendar - GitHub\own-cloud-calendar\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarShared\bin\Release\log4net.dll
+D:\Vladimir Varagic\Privatno\Diplomski rad\svnVersion\ownCloudCalendar - GitHub\own-cloud-calendar\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarShared\obj\Release\ownCloudCalendarShared.dll
+D:\Vladimir Varagic\Privatno\Diplomski rad\svnVersion\ownCloudCalendar - GitHub\own-cloud-calendar\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarShared\obj\Release\ownCloudCalendarShared.pdb
