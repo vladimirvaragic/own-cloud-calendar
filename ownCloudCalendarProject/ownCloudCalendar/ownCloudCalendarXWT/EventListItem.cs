@@ -30,6 +30,7 @@ namespace ownCloudCalendarXWT
         Label lblEventLocation = new Label("Event location");
         Label lblDescription = new Label("Description:");
         Label lblEventDescription = new Label("Event description");
+        Label lblLine = new Label("_________________________________________________________________________________________________");
 
         #endregion Private fields
 
@@ -48,7 +49,9 @@ namespace ownCloudCalendarXWT
             AddChild(lblLocation, 7, 61);
             AddChild(lblEventLocation, 76, 61);
             AddChild(lblDescription, 7, 87);
+            lblEventDescription.MinWidth = 250;
             AddChild(lblEventDescription, 76, 87);
+            AddChild(lblLine, 0, 150);
         }
 
         private void PopulateControls(DataRow eventItem, bool isAllDay)

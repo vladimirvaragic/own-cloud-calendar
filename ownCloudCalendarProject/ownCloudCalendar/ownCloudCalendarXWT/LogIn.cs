@@ -150,7 +150,7 @@ namespace ownCloudCalendarXWT
 
                 if (!String.IsNullOrEmpty(validationMessage))
                 {
-                    MessageDialog.ShowError(validationMessage);
+                    MessageDialog.ShowError(this.ParentWindow, validationMessage);
                     return;
                 }
 
@@ -159,7 +159,7 @@ namespace ownCloudCalendarXWT
                 string url = txtServerAddress.Text.Trim() + cLogInUrlExtension;
                 if (!connector.CheckCredentials(url, txtUsername.Text.Trim(), txtPassword.Password.Trim()))
                 {
-                    MessageDialog.ShowMessage("There is a problem with connection to server. Please, check server address, username and password and try again.");
+                    MessageDialog.ShowMessage(this.ParentWindow, "There is a problem with connection to server. Please, check server address, username and password and try again.");
                 }
                 else
                 {

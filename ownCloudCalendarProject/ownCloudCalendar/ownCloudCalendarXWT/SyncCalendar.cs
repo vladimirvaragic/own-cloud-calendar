@@ -256,7 +256,7 @@ namespace ownCloudCalendarXWT
 
                 if (!String.IsNullOrEmpty(validationMessage))
                 {
-                    MessageDialog.ShowError(validationMessage);
+                    MessageDialog.ShowError(this.ParentWindow, validationMessage);
                     return;
                 }
 
@@ -264,7 +264,7 @@ namespace ownCloudCalendarXWT
 
                 if (iCalCollection == null)
                 {
-                    MessageDialog.ShowMessage("There is no calendar with the name " + txtCalendarName.Text.Trim());
+                    MessageDialog.ShowMessage(this.ParentWindow, "There is no calendar with the name " + txtCalendarName.Text.Trim());
                 }
                 else
                 {
@@ -274,6 +274,8 @@ namespace ownCloudCalendarXWT
                     {
                         syncTimerInterval = Convert.ToInt32(txtTimerInterval.Text);
                     }
+
+                    this.ParentWindow.Hide();
 
                     var eventListWindow = new Window()
                     {
@@ -293,7 +295,7 @@ namespace ownCloudCalendarXWT
                     }
                     else
                     {
-                        this.ParentWindow.Show();
+                        //this.ParentWindow.Show();
                     }
                 }
             }

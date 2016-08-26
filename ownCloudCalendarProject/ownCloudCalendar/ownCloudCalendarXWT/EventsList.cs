@@ -19,6 +19,8 @@ namespace ownCloudCalendarXWT
     {
         #region Private fields
 
+        Xwt.Drawing.Image iconImage = Xwt.Drawing.Image.FromFile(@"D:\Vladimir Varagic\Privatno\Diplomski rad\svnVersion\ownCloudCalendar\trunk\ownCloudCalendarProject\ownCloudCalendar\ownCloudCalendarXWT\Images\20141129064955676_easyicon_net_32.ico");
+
         Label lblNoEventsMessages = new Label("There is no upcoming events in calendar")
         {
             Font = Font.SystemFont.WithWeight(Xwt.Drawing.FontWeight.Bold).WithSize(12)
@@ -36,6 +38,11 @@ namespace ownCloudCalendarXWT
 
         Button btnSyncNow = new Button("Sync now");
         Button btnEventManagment = new Button("Manage events");
+        Button btnSettings = new Button("Sync settings");
+        Button btnLogOut = new Button("Log out");
+        Button btnQuit = new Button("Quit");
+
+        Label lblLine = new Label("_________________________________________________________________________________________________");
 
         #endregion Private fields
 
@@ -68,6 +75,21 @@ namespace ownCloudCalendarXWT
                 btnEventManagment.Clicked += delegate
                 {
                     btnEventManagment_Click();
+                };
+
+                btnSettings.Clicked += delegate
+                {
+                    btnSettings_Click();
+                };
+
+                btnLogOut.Clicked += delegate
+                {
+                    btnLogOut_Click();
+                };
+
+                btnQuit.Clicked += delegate
+                {
+                    btnQuit_Click();
                 };
             }
             catch (Exception ex)
@@ -150,6 +172,7 @@ namespace ownCloudCalendarXWT
             AddChild(lblTitle, 13, 13);
             lblNoEventsMessages.MinWidth = 220;
             AddChild(lblNoEventsMessages, 13, 52);
+            AddChild(lblLine, 0, 20);
 
             drEvents.MinWidth = 478;
             drEvents.MinHeight = 378;
@@ -163,7 +186,22 @@ namespace ownCloudCalendarXWT
             btnEventManagment.MinWidth = 105;
             btnEventManagment.MinHeight = 23;
             btnEventManagment.BackgroundColor = Xwt.Drawing.Color.FromBytes(68, 187, 238);
-            AddChild(btnEventManagment, 372, 427);
+            AddChild(btnEventManagment, 85, 427);
+
+            btnSettings.MinWidth = 115;
+            btnSettings.MinHeight = 23;
+            btnSettings.BackgroundColor = Xwt.Drawing.Color.FromBytes(68, 187, 238);
+            AddChild(btnSettings, 200, 427);
+
+            btnLogOut.MinWidth = 75;
+            btnLogOut.MinHeight = 23;
+            btnLogOut.BackgroundColor = Xwt.Drawing.Color.FromBytes(68, 187, 238);
+            AddChild(btnLogOut, 320, 427);
+
+            btnQuit.MinWidth = 75;
+            btnQuit.MinHeight = 23;
+            btnQuit.BackgroundColor = Xwt.Drawing.Color.FromBytes(68, 187, 238);
+            AddChild(btnQuit, 400, 427);
         }
 
         private void PopulateEventsList()
@@ -429,7 +467,7 @@ namespace ownCloudCalendarXWT
                         {
                             string message = String.Format("Event {0} will start in 5 minutes", item.Summary.ToString());
 
-                            MessageDialog.ShowMessage(message);
+                            MessageDialog.ShowMessage(this.ParentWindow, message);
                         }
                     }
                 }
@@ -517,6 +555,69 @@ namespace ownCloudCalendarXWT
             {
                 CalCollection = GetCalendarEventsData();
                 PopulateEventsList();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private void btnQuit_Click()
+        {
+            try
+            {
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private void btnLogOut_Click()
+        {
+            try
+            {
+                this.ParentWindow.Hide();
+
+                var mainWindow = new Window()
+                {
+                    Title = "ownCloud Calendar Client",
+                    Width = 500,
+                    Height = 250,
+                    Icon = iconImage
+                };
+
+                mainWindow.Resizable = false;
+
+                LogIn logIn = new LogIn();
+
+                mainWindow.Content = logIn;
+
+                mainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private void btnSettings_Click()
+        {
+            try
+            {
+                this.ParentWindow.Hide();
+
+                var syncCalendarWindow = new Window()
+                {
+                    Title = "ownCloud Calendar Client",
+                    Width = 500,
+                    Height = 250
+                };
+                syncCalendarWindow.Resizable = false;
+                SyncCalendar syncCalendar = new SyncCalendar(ServerAddress, Username, Password);
+                syncCalendarWindow.Content = syncCalendar;
+                syncCalendarWindow.Show();
             }
             catch (Exception ex)
             {
