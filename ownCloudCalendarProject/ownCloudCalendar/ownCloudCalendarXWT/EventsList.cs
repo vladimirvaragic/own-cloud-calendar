@@ -308,10 +308,12 @@ namespace ownCloudCalendarXWT
 
         private void BindEventRepeater()
         {
+            drEvents.Clear();
+
             bool isAllDay = false;
 
             DataTable dtEvents = GetDataTableFromCollection(out isAllDay);
-
+            
             foreach (DataRow drEvent in dtEvents.Rows)
             {
                 EventListItem eventListItem = new EventListItem(drEvent, isAllDay);
